@@ -8,7 +8,7 @@ PFBT is intended to automate routine tasks.
 - `resize-video.py` resizes and re-encodes video file(s)
 - `resize-image.py` resizes and re-encodes image file(s)
 
-Ffmpeg and Python 3 are required.
+FFmpeg and Python 3 are required.
 
 Tested on Windows 10.
 
