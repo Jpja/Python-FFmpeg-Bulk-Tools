@@ -18,7 +18,7 @@ Tested on Windows 10.
 
 Open the script files to change default parameters.
 
-Alternatvely, run script in command. See `[script].py -h` for help info.
+Alternatvely, run script in command. `[script].py -h` for help.
 
 ### Detect Motion
 `detect-motion.py` is suitable for videos with a static background, and where the foreground object periodically enters and leaves the frame. The script finds none, one or multiple pairs of start and end motion points. By default it then calls `cut-video.py` to extract any motion events as new files.
