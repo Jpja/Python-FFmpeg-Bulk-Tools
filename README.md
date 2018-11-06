@@ -14,7 +14,7 @@ Tested on Windows 10.
 
 ### Usage
 
-`detect-motion.py`, `resize-video.py` and `resize-image.py` can be run by double-clicking the files. The defult settings are applied to every video/image file in the directory, and new files are created.
+`detect-motion.py`, `resize-video.py` and `resize-image.py` can be run by double-clicking the files. The defult settings are applied to every video/image file in the same directory, and new files are created.
 
 Open the script files to change default parameters.
 
