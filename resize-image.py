@@ -111,7 +111,9 @@ for input_file in input_files:
 		file_extension = '.'+out_format 
 	out_file = filename
 	if (long_filename):
-		if fitbox == 1:
+		if int(height) <= -1 or int(width) <= -1:
+			out_file += '-r'
+		elif fitbox == 1:
 			out_file += '-fit'
 		else:
 			out_file += '-r'
