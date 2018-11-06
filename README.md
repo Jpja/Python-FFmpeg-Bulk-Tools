@@ -1,6 +1,6 @@
 # Python FFmpeg Bulk Tools  
 
-Python FFmpeg Bulk Tools (PFBT) are python script that run FFmpeg commands on one, several or all files in a directory.
+Python FFmpeg Bulk Tools is a collection of python scripts that run FFmpeg commands on one, several or all files in a directory.
 
 PBFT is intended to automate routine tasks.
 - `detect-motion.py` finds start and end points of motion events
