@@ -37,7 +37,7 @@ Alternatvely, run script in command. `[script].py -h` for help.
 2) Downsize videos to email attachment size with command `resize-video.py --height 480 --crf 26 --fps 20`. (Tested on same input file, reduced by 96%)
 
 ### Resize Image
-`resize-image.py` by default re-encodes image. Set height and/or width to force new resolution. Optional can set `fitbox=1` to keep aspect ratio while neither height nor width can be more than specified.  
+`resize-image.py` by default re-encodes image. Set height and/or width to force new resolution. Optionally, set `fitbox=1` to keep aspect ratio while neither height nor width can be more than specified.  
 ##### Examples
 1) For a website you want all images to be exactly 600x400 pixels. Run command `resize-image.py --width 600 --height 400 --fitbox 0`.
 2) The same above, but you want this only applied to files ending with x.jpg. Run command `resize-image.py --file x.jpg --width 600 --height 400 --fitbox 0`
