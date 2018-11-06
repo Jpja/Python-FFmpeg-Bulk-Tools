@@ -1,8 +1,8 @@
 # Python FFmpeg Bulk Tools  
 
-Python FFmpeg Bulk Tools is a collection of python scripts that run FFmpeg commands on one, several or all files in a directory.
+Python FFmpeg Bulk Tools (PFBT) is a collection of python scripts that run FFmpeg commands on one, several or all files in a directory.
 
-PBFT is intended to automate routine tasks.
+PFBT is intended to automate routine tasks.
 - `detect-motion.py` finds start and end points of motion events
 - `cut-video.py` splits a video into new, separate files based on start and end points
 - `resize-video.py` resizes and re-encodes video file(s)
