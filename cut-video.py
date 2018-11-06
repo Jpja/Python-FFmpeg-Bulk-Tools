@@ -57,18 +57,23 @@ parser.add_argument('arguments', metavar='args', type=str, nargs='+', help='file
 args = parser.parse_args()
 inputs = args.arguments
 
-print(inputs)
 
 try_file = inputs[0]
 clip_start = []
 clip_end = []
 
 
-#function converts HOURS:MM:SS timestamp to seconds  
+#function converts timestamp to seconds  
+#allow two input formats; HOURS:MM:SS or HHMMSS
+# e.g. '1:02' = '102' = 62s or '1:01:02.5' = '010102.5' = 3662.5s   
 def tsToSec(ts):
 	parts = str(ts).split(':')
 	if len(parts) == 1:
-		return float(parts[0])
+		x = float(parts[0])
+		hr = math.floor(x / 10000)
+		min = math.floor((x - hr * 10000) / 100)
+		sec = x - hr * 10000 - min * 100
+		return float(hr*3600 + min*60 + sec)
 	if len(parts) == 2:
 		return int(parts[0]) * 60 + float(parts[1])
 	if len(parts) == 3:
@@ -117,9 +122,9 @@ for x in range(len(file_formats)):
 	for file in glob.glob('*.'+file_formats[x]):
 		input_files_all.append(file)
 input_files_all = sorted(input_files_all, key=str.lower)
-print("Video files in folder:")
-for input_file in input_files_all:
-	print(' '+input_file)
+#print("Video files in folder:")
+#for input_file in input_files_all:
+	#print(' '+input_file)
 	
 	
 #find the file to process
