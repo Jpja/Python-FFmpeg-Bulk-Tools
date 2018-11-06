@@ -6,9 +6,10 @@
 
 #default parameters
 codec = "libx264" #alternatives libx265 libvpx-vp9 libaom-av1  
+height = -2 #height in pixels, e.g. 1080 or 720. -2 keeps original aspect ratio
+width = -2 #width in pixels. -2 keeps original aspect ratio
+fps = -1 #fps of output file, -1 keeps original fps
 crf = 24 #range 1-51, 18-24 recommended. Lower value = better quality but larger file size
-height = -1 #height in pixels, e.g. 1080 or 720. -1 keeps original aspect ratio
-width = -1 #width in pixels. -1 keeps original aspect ratio
 preset = 'faster' #ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, or veryslow. Veryslow results in a smaller file size for the same quality
 long_filename = True #whether to include codec and crf value in output file name
 process_outputs = False #whether to use output files from previous times script was run as new inputs
@@ -58,12 +59,14 @@ parser = argparse.ArgumentParser(
 			See https://unix.stackexchange.com/questions/28803/how-can-i-reduce-a-videos-size-with-ffmpeg
         '''))
 parser.add_argument("-c", "--codec", default=codec, help='Default '+codec+'. libx264 is the fastest and most widely used. For better quality and compression, consider libx265. An alternative is libvpx-vp9. The new format libaom-av1 is experimental.')
+parser.add_argument("-r", "--fps", default=fps, help='Default '+str(fps)+'. Frame rate (fps). -1 keeps original fps')
 parser.add_argument("-crf", "--crf", default=crf, help='Default '+str(crf)+'. Range 1-51. Lower value means better quality but larger file size')
-parser.add_argument("-pxh", "--height", default=height, help='Default '+str(height)+'. Height in pixels of output video, e.g. 720 or 1080. If not specified, keep input video\'s aspect ratio. If both -pxh and -pxw are -1, original dimensions are kept')
-parser.add_argument("-pxw", "--width", default=width, help='Default '+str(width)+'. Width in pixels. If -1 or not specified, aspect ratio is kept')
+parser.add_argument("-pxh", "--height", default=height, help='Default '+str(height)+'. Height in pixels of output video, e.g. 720 or 1080. If not specified, keep input video\'s aspect ratio. If both -pxh and -pxw are -2, original dimensions are kept')
+parser.add_argument("-pxw", "--width", default=width, help='Default '+str(width)+'. Width in pixels. If -2 or not specified, aspect ratio is kept')
 parser.add_argument("-i", "-f", "--file", default='', help='name of input file, or substring to process any matching file name. If -1 or not specified, all video files in folder are processed.')
 args = parser.parse_args()
 codec = args.codec
+fps = args.fps
 crf = args.crf
 height = args.height
 width = args.width
@@ -127,16 +130,16 @@ for input_file in input_files:
 #do this for each video file
 for input_file in input_files:
 	filename, file_extension = os.path.splitext(input_file)
-	extra_info = ''
+	codec_info = ''
 	codec_short = codec[-4:]
 	out_file = filename
 	file_type = 'mp4'
 	if (codec == 'libvpx-vp9'):
-		add_info = ' -b:v 0'
+		codec_info = ' -b:v 0'
 		codec_short = 'vp9'
 		file_type = 'webm'
 	elif (codec == 'libaom-av1'):
-		add_info = ' -b:v 0 -strict experimental'
+		codec_info = ' -b:v 0 -strict experimental'
 		codec_short = 'av1'
 		file_type = 'mkv'
 	elif (codec == 'libx264'):
@@ -144,20 +147,27 @@ for input_file in input_files:
 	elif (codec == 'libx265'):
 		codec_short = 'x265'
 	
-	if height != -1 and width != -1:
+	if int(height) > -1 and int(width) > -1:
 		out_file += '-'+str(width)+'x'+str(height)
 	else:
-		if (height != -1):
+		if int(height) > -1:
 			out_file += '-'+str(height)+'h'	
-		if (width != -1):
+		if int(width) > -1:
 			out_file += '-'+str(width)+'w'
-	
-	if (long_filename):
+	if int(fps) > -1:
+		out_file += "-"+str(fps)+"fps"
+	if long_filename:
 		out_file += "-"+codec_short+"-"+str(crf)+'.'+file_type
 	else:
 		out_file = filename+"-r."+file_type
 	
-	command = "ffmpeg -i \""+input_file+"\" -vf scale="+str(width)+":"+str(height)+" -c:v "+codec+" -crf "+str(crf)+extra_info+" -preset "+preset+" \""+out_file+"\""
+	command = "ffmpeg -i \""+input_file+"\"" 
+	if int(fps) > -1:
+		command += " -r "+str(fps)
+	command += " -vf scale="+str(width)+":"+str(height)
+	command += " -c:v "+codec+" -crf "+str(crf)+codec_info
+	command += " -preset "+preset
+	command += " \""+out_file+"\""
 	
 	print('Run command:')	
 	print(' ' + command)	
